@@ -1,0 +1,12 @@
+h1 Create Profile
+-- @id=1
+form action="/profile/#{@id}/create" method="post"
+    input type="text" placeholder="Namn" name="name"
+    input type="number" placeHolder="Ålder" name="age"
+
+    select name="gender"
+        option value="" Välj kön
+        option value="male" Male
+        option value="female" Female
+    
+    input type="submit" value="Skapa"
