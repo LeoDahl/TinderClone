@@ -13,20 +13,7 @@ SQL
 
 db.execute("DELETE FROM imgprofile")
 
-# PROFILE TABLE EXAMPLE 
-# Params : Name, male?, age
-#users = [
-#  ["Beo Bahl", true, 18],
-#  ["Lucas poopson", true, 19],
-#  ["Babisah goonson", false, 19],
-#  ["Milo Anders", false, 19],
-#  ["Sarina Kolt", true, 19],
-#  ["Tobias Venn", true, 51],
-#  ["Elina Marsh", false, 39],
-#  ["Rico Dahlen", true, 29],
-#  ["Nadia Frost", false, 19],
-#  ["Oskar Lume", true, 19],
-#]
+
 # Image table
 # Params : imageurl, id
 #profileimg = [
