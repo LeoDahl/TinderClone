@@ -54,6 +54,9 @@ post("/account/login") do
   valid, hash = accountHandler.match_credentials(username,password)
   if valid 
     sessionHandler.create_session(username, hash)
+    redirect("/")
+  else
+    p "wrong pass"
   end
 end
 
@@ -65,12 +68,22 @@ end
 
 ## Profile POST handlers
 post("/profile/create") do
-  profileHandler = ProfileHandler.new
 
+  ## Get current logged in persons ID
+  logged_in_as = session[:logged_in_as]
+  accountHandler = AccountHandler.new()
+  id = accountHandler.get_id_from_username(logged_in_as)[0]
   name, gender, age = params[:name], params[:gender], params[:age]
   profile_pic = params[:pfp]
+  ###
+  
+  path = store_profile_picture(profile_pic)
+
+  profileHandler = ProfileHandler.new
+  p [path,id]
+  profileHandler.add_profile_image(path, id)
+
   p "class : #{profile_pic}"
-  store_profile_picture(profile_pic)
 
   profileHandler.create(name,gender,age)
   redirect(:index)
@@ -93,4 +106,5 @@ def store_profile_picture(pic)
   File.open(path, "wb") do |file|
     file.write(pic["tempfile"].read)
   end
+  return path
 end

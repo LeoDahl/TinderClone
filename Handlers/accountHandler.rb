@@ -16,10 +16,10 @@ class AccountHandler
       [name,encrypted]
     )
   end
-  def find(id)
+  def get_id_from_username(username)
     @db.execute(
-      "SELECT account WHERE id =?",
-      [id]
+      "SELECT id FROM account WHERE username =?",
+      [username]
     )
   end
   
@@ -31,12 +31,17 @@ class AccountHandler
     ).first
     p user
 
-    stored_hash = user[2] 
-    valid = BCrypt::Password.new(stored_hash)
-    return valid, stored_hash
-      
-      
+    if user
+      stored_hash = user[2]
+      valid = BCrypt::Password.new(stored_hash)
+
+      correct = valid == password
+      return correct, stored_hash
+    end  
+    p "user not found"
+    return false, nil
   end
+  
 
   def encode(password)
     encrypted = BCrypt::Password.create(password)

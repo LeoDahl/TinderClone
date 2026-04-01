@@ -8,13 +8,13 @@ class ProfileHandler
   # profile handlers
   def create(name,gender,age)
     @db.execute(
-      "INSERT INTO profile (name, male, age) VALUES (?, ?, ?)",
-      [@name, @gender, @age]
+      "INSERT INTO account (displayname, gender, age) VALUES (?, ?, ?)",
+      [name, gender, age]
     )
   end
   def find(id)
     @db.execute(
-      "SELECT profile WHERE id =?",
+      "SELECT account WHERE id =?",
       [id]
     )
   end
@@ -29,7 +29,7 @@ class ProfileHandler
     end
 
     @db.execute(
-      "SELECT profile WHERE age BETWEEN ? AND ? AND gender =?",
+      "SELECT account  WHERE age BETWEEN ? AND ? AND gender =?",
       [min,max, opposite_gender]
     )
   end
