@@ -3,8 +3,9 @@ require 'sqlite3'
 db = SQLite3::Database.new("database.db")
 
 db.execute <<-SQL
-  CREATE TABLE IF NOT EXISTS profile (
+  CREATE TABLE profile (
     id INTEGER PRIMARY KEY,
+    userid INTEGER NOT NULL,
     name TEXT NOT NULL,
     gender TEXT NOT NULL,
     age INTEGER NOT NULL

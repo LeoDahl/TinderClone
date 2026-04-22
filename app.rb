@@ -6,6 +6,7 @@ require 'sqlite3'
 require_relative './Handlers/profileHandler.rb'
 require_relative './Handlers/accountHandler.rb'
 require_relative './Handlers/sessionHandler.rb'
+require_relative './Handlers/pictureHandler.rb'
 
 enable :sessions
 
@@ -15,18 +16,17 @@ get("/") do
   sessionHandler = SessionHandler.new(session)
 
   passhash = session[:accountsession], 
-  logged_in_as = session[:logged_in_as]
-  p logged_in_as, passhash
+  @logged_in_as = session[:logged_in_as]
 
-  if passhash == nil or logged_in_as == nil
+  if passhash == nil or @logged_in_as == nil
     p "hello"
     redirect("/account/login")
     return 
   end
-  if sessionHandler.is_user_logged_in?(logged_in_as, passhash) == false 
+  if sessionHandler.is_user_logged_in?(@logged_in_as, passhash) == false 
+    @logged_in_as = session[:logged_in_as]
     slim(:login)
   end
-
   slim(:index)
 end
 
@@ -60,6 +60,28 @@ post("/account/login") do
   end
 end
 
+get("/profile") do
+  profileHandler = ProfileHandler.new
+  accountHandler = AccountHandler.new
+  pictureHandler = PictureHandler.new
+
+  logged_in_as = session[:logged_in_as]
+  p logged_in_as
+  id = accountHandler.get_id_from_username(logged_in_as)[0][0]
+  @user = logged_in_as
+
+  p id
+  profile = profileHandler.find(id)[0]
+  p "profile = #{profile}"
+
+  @display = profile[2]
+  @gender = profile[3]
+  @age = profile[4]
+
+  @pics = pictureHandler.get_images_from_account(id)[0]
+  p @pics
+  slim(:profile)
+end
 
 ## Profile GET handlers
 get("/profile/create") do 
@@ -85,7 +107,7 @@ post("/profile/create") do
 
   p "class : #{profile_pic}"
 
-  profileHandler.create(name,gender,age)
+  profileHandler.create(id, name,gender,age)
   redirect(:index)
 end
 
