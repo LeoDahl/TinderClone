@@ -30,6 +30,30 @@ get("/") do
   slim(:index)
 end
 
+get('/swipe') do
+  profileHandler = ProfileHandler.new()
+  accountHandler = AccountHandler.new()
+  pictureHandler = PictureHandler.new()
+
+  id = accountHandler.get_id_from_username(@logged_in_as)[0]
+  if id.nil? then slim(:createProfile) end
+
+  if profileHandler.find(id)
+    selfprofile = profileHandler.find(id)
+    p selfprofile
+    selfName = selfprofile[0][2].to_s
+    id = accountHandler.get_id_from_username(@logged_in_as)[0]
+    print("selfname is = #{selfName}")
+
+    @profiles = profileHandler.get_all_profiles_excluding(selfName)
+    @randomuser = @profiles.sample()
+    @pic = pictureHandler.get_images_from_account(@randomuser[0])[0][0]
+    @pic = @pic.gsub("public/", "")
+    p "all other profiles = #{@profiles}"
+    slim(:swipe)
+  end
+end
+
 ## Account GET/POST Handlers
 
 get("/account/create") do
@@ -79,6 +103,7 @@ get("/profile") do
   @age = profile[4]
 
   @pics = pictureHandler.get_images_from_account(id)[0]
+  @pics = @pics.map {|pic| pic.gsub("public/", "")}
   p @pics
   slim(:profile)
 end
@@ -124,7 +149,7 @@ def store_profile_picture(pic)
   random_name = ""
   8.times{random_name << ((rand(2)==1?65:97) + rand(25)).chr}
 
-  path = "./images/profile_images/#{random_name}.jpg"
+  path = "/profile_images/#{random_name}.jpg"
   File.open(path, "wb") do |file|
     file.write(pic["tempfile"].read)
   end

@@ -48,6 +48,14 @@ class ProfileHandler
       [id, url])
   end
 
+  def get_all_profiles_excluding(name)
+    db = SQLite3::Database.new("db/database.db")
+    profile = db.execute(
+      "SELECT * FROM profile WHERE name != ?",
+      [name])
+  end
+
+
   # private
   private
   def calculate_age_range(age)

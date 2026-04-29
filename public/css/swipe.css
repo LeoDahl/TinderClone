@@ -1,0 +1,11 @@
+.swipebox {
+    background-color: rgb(226, 226, 252);
+    width: 40%;
+    height: 70%;
+
+    margin: 0 auto;
+}
+.swipebox img {
+    display: block;
+    margin: 0 auto;
+}
