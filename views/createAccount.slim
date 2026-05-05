@@ -1,5 +1,9 @@
 h1 Create Account
 
+
+- if @error
+  p style="color: red" = @error
+
 form action="/account/create" method="post"
   p Username
   input type="text" placeholder="John Doe" name="username"

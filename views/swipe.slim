@@ -1,6 +1,8 @@
 h1 = "welcome, #{@logged_in_as}"
 link rel="stylesheet" href="/css/swipe.css"
-button Log out
+
+form action="/logout" method="post"
+  button type="submit" Logga ut
 
 form method="get" action="/profile/create"
     input type="submit" value="create profile"
@@ -8,9 +10,13 @@ form method="get" action="/profile/create"
 form method="get" action="/profile"
     input type="submit" value="see profile"
 div class="swipebox"
-    button Yes
-    button No
-    p = 
+
+    form action="/swipe/#{@randomuser[0]}/like" method="post"
+        button type="submit" Yes
+
+    
+    button onClick="window.location.reload()" No
+    p = @randomuser[2]
     p = "age: #{@randomuser[4]}"
     
     p = "gender: #{@randomuser[3]}"

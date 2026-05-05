@@ -1,0 +1,7 @@
+h1 Admin
+
+- @accounts.each do |account|
+  div
+    p = "#{account[1]} - #{account[2]}"
+    form action="/admin/delete/#{account[0]}" method="post"
+      input type="submit" value="Ta bort"

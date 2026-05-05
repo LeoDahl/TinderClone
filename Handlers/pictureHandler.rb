@@ -1,7 +1,6 @@
 require_relative "sessionHandler.rb"
 
 class PictureHandler
-  include BCrypt
   def initialize()
     @db = SQLite3::Database.new("db/database.db")
   end

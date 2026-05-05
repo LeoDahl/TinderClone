@@ -29,28 +29,25 @@ class ProfileHandler
     end
 
     @db.execute(
-      "SELECT profile  WHERE age BETWEEN ? AND ? AND gender =?",
+      "SELECT * FROM profile WHERE age BETWEEN ? AND ? AND gender =?",
       [min,max, opposite_gender]
     )
   end
 
   # profile_images handlers
   def get_profile_images(id)
-    db = SQLite3::Database.new("db/database.db")
-    images = db.execute(
-      "SELECT imageurl FROM imgprofile WHERE profile_id=?", 
+    images = @db.execute(
+      "SELECT imageurl FROM imgprofile WHERE profileid=?", 
       [id])
   end
   def add_profile_image(url, id)
-    db = SQLite3::Database.new("db/database.db")
-    db.execute(
+    @db.execute(
       "INSERT INTO imgprofile (profileid, imageurl) VALUES (?,?)", 
       [id, url])
   end
 
   def get_all_profiles_excluding(name)
-    db = SQLite3::Database.new("db/database.db")
-    profile = db.execute(
+    profile = @db.execute(
       "SELECT * FROM profile WHERE name != ?",
       [name])
   end
@@ -63,7 +60,7 @@ class ProfileHandler
     max = 0
     if age <= 21
       min = 18
-    else age >= 22
+    elsif age >= 22
       min = age - 4
     end
     max = age+4

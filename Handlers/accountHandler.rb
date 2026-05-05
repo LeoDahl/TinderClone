@@ -1,5 +1,4 @@
 require "bcrypt"
-require_relative "sessionHandler.rb"
 
 class AccountHandler
   include BCrypt
@@ -23,6 +22,14 @@ class AccountHandler
     )
   end
   
+  def get_role(username)
+    @db.execute("SELECT role FROM account WHERE username = ?",
+    [username])[0][0]
+  end
+  def edit_password(username, newpass)
+      encrypted = encode(newpass)
+      @db.execute("UPDATE account SET pass = ? WHERE username = ?", [encrypted, username])
+  end
   
   def match_credentials(username, password)
     user = @db.execute(

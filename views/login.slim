@@ -1,5 +1,7 @@
 h1 Login
-- @id = 1
+
+- if @error
+  p style="color: red" = @error
 form action="/account/login" method="post"
   p Username
   input type="text" placeholder="John Doe" name="username"

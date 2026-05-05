@@ -1,6 +1,8 @@
 h1 = "welcome, #{@logged_in_as}"
 link rel="stylesheet" href="/css/swipe.css"
-button Log out
+
+form action="/logout" method="post"
+  button type="submit" Logga ut
 
 form method="get" action="/profile/create"
     input type="submit" value="create profile"
